@@ -1,0 +1,29 @@
+
+<config_plugin>
+	<config>
+		<!-- which projects to use for (can be more then one, otherwise use *) -->
+		<project>*</project>
+		<step>*</step>
+		<StepName>intranda_step_tei import</StepName>
+		<ErrorMessage>TEI file could not be found.</ErrorMessage>
+
+		<!--This is the path to the XSL file for transforming ECHO files into TEI files: -->
+		<xslFile>/home/joel/git/MPI-TEI/echo2tei.xsl/</xslFile>
+
+		<!--This is the base path to the TEI files: -->
+		<teiFolder>/home/joel/git/MPI-TEI/echo_tei/</teiFolder>
+
+		<!--This is the base path to the ECHo XML files: -->
+		<echoFolder>/home/joel/git/MPI-TEI/echo_xml/</echoFolder>
+
+		<!--This is the base path to the Goobi MM files: -->
+		<goobiMMFolder>/home/joel/git/MPI-TEI/metadata_files/</goobiMMFolder>
+
+		<!-- rulesets for the MM files: -->
+		<rulesetPath>/home/joel/git/MPI-TEI/rulesets_mpiwg/mpi.xml</rulesetPath>
+		
+		<!-- Viewer base path: the individual pages lie here + "id no."/"page no"/-->
+        <viewerPages>https://mpiviewer.intranda.com/viewer/image/</viewerPages>
+
+	</config>
+</config_plugin>

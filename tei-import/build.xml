@@ -1,0 +1,8 @@
+<project name="goobi-plugin-step-tei-import" default="devbuild">
+	<target name="devbuild">
+		<exec executable="mvn">
+			<arg value="package"/>
+		</exec>
+		<copy file="target/plugin_intranda_step_tei_import.jar" todir="/opt/digiverso/goobi/plugins/step/"/>
+	</target>
+</project>
