@@ -1,6 +1,4 @@
-AddValueRequestAddValueRequest# Automatic Handles
-
-Documentation zur Plugin zum automatische TEI-Datei Erzeugung.
+#Documentation zur Plugin zum automatische TEI-Datei Erzeugung.
 
 ## Beschreibung
 

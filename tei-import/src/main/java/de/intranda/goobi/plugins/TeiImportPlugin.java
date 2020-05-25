@@ -151,6 +151,10 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
             //to metadata/Process_no/images/Process_id_source/
             String strFolder = getSourceFolder(logical);
 
+            //make sure the folder exists:
+            File folder = new File(strFolder);
+            folder.mkdir();
+
             if (teiConverted == null) {
                 moveTeiFile(fileTEI, strFolder);
             } else {
@@ -244,9 +248,10 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
         }
 
         String strImagesDir = this.process.getImagesDirectory();
-        int iProcessId = this.process.getId();
+        String strIdNumber = getCatalogId(logical);
+        //        int iProcessId = this.process.getId();
 
-        String strSource = FilenameUtils.concat(strImagesDir, iProcessId + "_source/");
+        String strSource = FilenameUtils.concat(strImagesDir, strIdNumber + "_source/");
         return strSource;
     }
 
