@@ -61,44 +61,56 @@ public class ImageCorresp {
         }
         Element rootNode = document.getRootElement();
 
+        //Try version with "facsimile":
+        Element eltFacs = getElement(rootNode,  "facsimile");
+
+        if (eltFacs != null) {
+            List<Element> lstFacs = eltFacs.getChildren();
+
+            for (Element elt : lstFacs) {
+
+                for (Element eltChild : elt.getChildren()) {
+
+                    if (eltChild.getName().contentEquals("graphic")) {
+                        for (Attribute attC : eltChild.getAttributes()) {
+                            if (attC.getName().contentEquals("url")) {
+
+                                //change the url:
+                                String strNewURL = strUrlBase + iPage + "/";
+                                attC.setValue(strNewURL);
+                                //increment pages
+                                iPage++;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            
+            //no facsimile: try version with <body   <div   <pb facs="id" 
+            
+        }
+
+        //return the changed doc:
+        return document;
+    }
+
+    private Element getElement(Element rootNode, String strFacs) {
         Element eltFacs = null;
-        List<Element> elts = rootNode.getChildren("facsimile");
+        List<Element> elts = rootNode.getChildren(strFacs);
 
         if (!elts.isEmpty()) {
             eltFacs = elts.get(0);
         } else {
             for (Element element : rootNode.getChildren()) {
-                if (element.getName().contentEquals("facsimile")) {
+                if (element.getName().contentEquals(strFacs)) {
                     eltFacs = element;
                     break;
                 }
             }
         }
-
-        List<Element> lstFacs = eltFacs.getChildren();
-
-        for (Element elt : lstFacs) {
-
-            for (Element eltChild : elt.getChildren()) {
-
-                if (eltChild.getName().contentEquals("graphic")) {
-                    for (Attribute attC : eltChild.getAttributes()) {
-                        if (attC.getName().contentEquals("url")) {
-
-                            //change the url:
-                            String strNewURL = strUrlBase + iPage + "/";
-                            attC.setValue(strNewURL);
-                            //increment pages
-                            iPage++;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        //return the changed doc:
-        return document;
+        return eltFacs;
     }
 
     public List<FileCorresp> fromFilePair(DigitalDocument dd, File fileTEI) {

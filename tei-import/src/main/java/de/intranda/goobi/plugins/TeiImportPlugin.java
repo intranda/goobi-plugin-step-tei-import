@@ -57,7 +57,7 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
     private Process process;
     private Step step;
     private String returnPath;
-    private Prefs prefs;
+    public Prefs prefs;
 
     //    private SubnodeConfiguration config;
     private ConnectMMtoTEI connector;
@@ -123,10 +123,7 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
 
         try {
             //read the metadata file
-            Fileformat fileformat = process.readMetadataFile();
-
             DigitalDocument dd = getDD();
-            fileformat.getDigitalDocument();
             DocStruct logical = dd.getLogicalDocStruct();
             //            DocStruct physical = digitalDocument.getPhysicalDocStruct();
 
