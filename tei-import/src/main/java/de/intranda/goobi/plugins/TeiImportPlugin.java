@@ -158,7 +158,7 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
             if (teiConverted == null) {
                 moveTeiFile(fileTEI, strFolder);
             } else {
-                String strFilenameNew = FilenameUtils.concat(strFolder, fileTEI.getName());
+                String strFilenameNew = FilenameUtils.concat(strFolder, "tei.xml");
                 saveTeiFile(teiConverted, strFilenameNew);
             }
 
