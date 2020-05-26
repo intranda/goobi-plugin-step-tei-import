@@ -31,7 +31,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
-import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.Document;
 // For write operation
 import javax.xml.transform.Transformer;
@@ -42,7 +41,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.util.Arrays;
 
 public class XSLTrans {
     // Global value so it can be ref'd by the tree-adapter

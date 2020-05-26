@@ -69,7 +69,7 @@ public class MakePlaintext {
 
         //Collect page numbers 
         Element eltFacs = getElement(rootNode, "facsimile");
-        ArrayList<String> lstIds = new ArrayList();
+        ArrayList<String> lstIds = new ArrayList<String>();
 
         if (eltFacs != null) {
             List<Element> lstFacs = eltFacs.getChildren();
