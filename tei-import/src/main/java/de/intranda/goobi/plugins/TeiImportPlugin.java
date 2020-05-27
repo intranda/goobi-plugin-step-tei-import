@@ -1,8 +1,10 @@
 package de.intranda.goobi.plugins;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,7 +15,6 @@ import org.apache.commons.configuration.SubnodeConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.goobi.beans.Process;
 import org.goobi.production.enums.PluginGuiType;
@@ -36,6 +37,7 @@ import ugh.exceptions.WriteException;
 import ugh.fileformats.mets.MetsMods;
 //import uk.gov.nationalarchives.droid.core.signature.FileFormat;
 import de.sub.goobi.config.ConfigPlugins;
+import de.sub.goobi.helper.StorageProvider;
 import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.helper.exceptions.SwapException;
 import lombok.extern.log4j.Log4j;
@@ -148,8 +150,11 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
             String strFolder = getSourceFolder(logical);
 
             //make sure the folder exists:
-            File folder = new File(strFolder);
-            folder.mkdir();
+            Path folder = Paths.get(strFolder);
+            if (!StorageProvider.getInstance().isFileExists(folder)) {
+                StorageProvider.getInstance().createDirectories(folder);
+            }
+            
 
             if (teiConverted == null) {
                 moveTeiFile(fileTEI, strFolder);
@@ -186,17 +191,22 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
     private void moveTeiFile(File fileTEI, String strFolder) throws IOException {
 
         String strFilenameNew = FilenameUtils.concat(strFolder, fileTEI.getName());
-        File fileDestination = new File(strFilenameNew);
-        FileUtils.copyFile(fileTEI, fileDestination);
+        Path pathDestination =  Paths.get(strFilenameNew);
+        
+        StorageProvider.getInstance().copyFile(fileTEI.toPath(), pathDestination);
+//        FileUtils.copyFile(fileTEI, fileDestination);
     }
 
     private void saveTeiFile(Document teiConverted, String strFilenameNew) throws IOException {
 
         XMLOutputter xmlOutput = new XMLOutputter();
 
+        OutputStream output =  StorageProvider.getInstance().newOutputStream(Paths.get(strFilenameNew));
+//        StorageProvider.getInstance().createFile(Paths.get(strFilenameNew));
+        
         // display nice nice
         xmlOutput.setFormat(Format.getPrettyFormat());
-        xmlOutput.output(teiConverted, new FileWriter(strFilenameNew));
+        xmlOutput.output(teiConverted, output); // new FileWriter(strFilenameNew));
     }
 
     /**

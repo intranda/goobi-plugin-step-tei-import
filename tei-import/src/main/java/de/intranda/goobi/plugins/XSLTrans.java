@@ -31,6 +31,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+
+import de.sub.goobi.helper.StorageProvider;
+
 import org.w3c.dom.Document;
 // For write operation
 import javax.xml.transform.Transformer;
@@ -41,14 +44,21 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.nio.file.Path;
 
 public class XSLTrans {
     // Global value so it can be ref'd by the tree-adapter
     static DocumentBuilderFactory factory;
 
-     public static void makeTEI(File stylesheet, File datafile, File fileOutput) {
+    public static void makeTEI(File fileXLS, File datafile, Path fileTei) {
 
         try {
+            
+            if (StorageProvider.getInstance().isFileExists(fileTei)) {
+                StorageProvider.getInstance().deleteFile(fileTei);
+            }
+            StorageProvider.getInstance().createFile(fileTei);            
+            
             if (factory == null) {
                 factory = DocumentBuilderFactory.newInstance();
             }
@@ -59,11 +69,11 @@ public class XSLTrans {
             // Use a Transformer for output
             TransformerFactory tFactory = new net.sf.saxon.TransformerFactoryImpl();
             //            TransformerFactory tFactory = TransformerFactory.newInstance();
-            StreamSource stylesource = new StreamSource(stylesheet);
+            StreamSource stylesource = new StreamSource(fileXLS);
             Transformer transformer = tFactory.newTransformer(stylesource);
 
             DOMSource source = new DOMSource(document);
-            StreamResult result = new StreamResult(fileOutput);
+            StreamResult result = new StreamResult(fileTei.toFile());
             transformer.transform(source, result);
 
         } catch (TransformerConfigurationException tce) {

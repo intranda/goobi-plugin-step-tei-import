@@ -1,6 +1,9 @@
 package de.intranda.goobi.plugins;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.configuration.ConfigurationException;
@@ -11,6 +14,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
+import de.sub.goobi.helper.StorageProvider;
 import ugh.exceptions.UGHException;
 
 public class ConnectMMtoTEI {
@@ -66,16 +70,18 @@ public class ConnectMMtoTEI {
         return null;
     }
 
-    public File convertToTEI(File fileEcho) {
+    public File convertToTEI(File fileEcho) throws IOException {
 
         String strTeiFilename = FilenameUtils.getBaseName(fileEcho.getName()) + "_TEI.xml";
-        File fileTei = new File(config.getString(confTeiFolder) + strTeiFilename);
-        File fileXLS = new File(config.getString(confXslFile));
+        
+        Path pathTei = Paths.get(config.getString(confTeiFolder) + strTeiFilename);
+        File fileXLS =new File(config.getString(confXslFile));
 
-        XSLTrans.makeTEI(fileXLS, fileEcho, fileTei);
+        XSLTrans.makeTEI(fileXLS, fileEcho, pathTei);
 
-        return fileTei;
-    }
+        return pathTei.toFile();
+        
+        }
 
     private Element getChild(Element eltParent, String strChildName) {
 
