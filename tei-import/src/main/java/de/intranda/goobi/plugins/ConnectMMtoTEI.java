@@ -10,6 +10,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -28,10 +29,12 @@ public class ConnectMMtoTEI {
     private static String confRulesetPath = "rulesetPath";
 
     private XMLConfiguration config;
+    private ImageCorresp corresp;
 
     public ConnectMMtoTEI(XMLConfiguration config) throws ConfigurationException, UGHException {
 
         this.config = config;
+        corresp = new ImageCorresp(config);
     }
 
     public File findEcho(String strID) {
@@ -104,9 +107,23 @@ public class ConnectMMtoTEI {
 
     public Document convertPageLinks(File fileTEI, String documentId) throws ConfigurationException, UGHException {
 
-        ImageCorresp corresp = new ImageCorresp(config);
         Document teiConverted = corresp.convertTeiLinks(fileTEI, documentId);
         return teiConverted;
+    }
+
+    
+    /**
+     * Find any pb elts within <s> elts, and move them outside
+     * @param document
+     * @return
+     * @throws UGHException 
+     * @throws ConfigurationException 
+     */
+    public Document cleanup(Document document) throws ConfigurationException, UGHException {
+
+        Document teiConverted = corresp.movePBs(document);
+        return teiConverted;
+
     }
 
 }

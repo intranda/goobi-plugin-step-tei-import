@@ -62,7 +62,7 @@ public class ImageCorresp {
         Element rootNode = document.getRootElement();
 
         //Try version with "facsimile":
-        Element eltFacs = getElement(rootNode,  "facsimile");
+        Element eltFacs = getElement(rootNode, "facsimile");
 
         if (eltFacs != null) {
             List<Element> lstFacs = eltFacs.getChildren();
@@ -87,9 +87,9 @@ public class ImageCorresp {
                 }
             }
         } else {
-            
+
             //no facsimile: try version with <body   <div   <pb facs="id" 
-            
+
         }
 
         //return the changed doc:
@@ -249,6 +249,78 @@ public class ImageCorresp {
         return lstImages;
     }
 
+    public Document movePBs(Document document) {
+
+        Element rootNode = document.getRootElement();
+
+        Element eltTxt = getElement(rootNode, "text");
+
+        if (eltTxt != null) {
+
+            Element eltBody = getElement(eltTxt, "body");
+            if (eltBody != null) {
+
+                List<Element> lstDivs = eltBody.getChildren();
+                for (Element eltDiv : lstDivs) {
+
+                    if (eltDiv.getName().contentEquals("div")) {
+                        for (Element eltPara : eltDiv.getChildren()) {
+
+                            if (eltPara.getName().contentEquals("p")) {
+
+                                List<Element> lstChildren = new ArrayList<Element>(eltPara.getChildren());
+                                for (Element eltS : lstChildren) {
+
+                                    if (eltS.getName().contentEquals("s")) {
+
+                                        int indexS = eltPara.indexOf(eltS);
+                                        
+                                        //here we may find a pb, which must be moved out:
+                                        List<Element> lstSub = new ArrayList<Element>(eltS.getChildren());
+                                        for (Element eltPB : lstSub) {
+
+                                            if (eltPB.getName().contentEquals("pb")) {
+
+                                                //split the text at the child:
+                                                int index = eltS.indexOf(eltPB);
+
+                                                if (index < eltS.getText().length()) {
+                                                    Element elt1 = eltS.clone();
+                                                    Element elt2 = eltS.clone();
+
+                                                    for (int i = index; i < eltS.getContentSize(); i++) {
+                                                        elt1.removeContent(index);                                                        
+                                                    }
+                                                    for (int i = 0; i <= index; i++) {
+                                                        elt2.removeContent(0);                                                        
+                                                    }
+
+                                                    eltPara.removeContent(indexS);
+                                                    eltPara.addContent(indexS, elt1);
+                                                    eltPara.addContent(indexS + 1, elt2);
+                                                }
+
+                                                //move it up one level
+                                                eltPB.detach();
+                                                eltPara.addContent(indexS + 1, eltPB);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //return the changed doc:
+        return document;
+    }
+
+    
+
+    
     //    /**
     //     * Get the list of corresponding files for the MM and TEI files.
     //     * 

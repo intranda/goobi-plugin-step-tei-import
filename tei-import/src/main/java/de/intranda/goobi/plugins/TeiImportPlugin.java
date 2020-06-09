@@ -145,6 +145,9 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
             //change page links:
             Document teiConverted = connector.convertPageLinks(fileTEI, getCatalogId(logical));
 
+            //move the pb links outside <s> elements:
+            teiConverted = connector.cleanup(teiConverted);
+            
             //move the TEI file to subfolder of goobi folder: 
             //to metadata/Process_no/images/Process_id_source/
             String strFolder = getSourceFolder(logical);
@@ -155,7 +158,6 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
                 StorageProvider.getInstance().createDirectories(folder);
             }
             
-
             if (teiConverted == null) {
                 moveTeiFile(fileTEI, strFolder);
             } else {
