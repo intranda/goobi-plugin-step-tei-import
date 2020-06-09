@@ -144,6 +144,9 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
                 log.warn("MPIWG ID: " + strId + " had no ECHO file");
                 return false;
             }
+            else {
+                log.warn("MPIWG ID: " + strId + " had ECHO file " + fileEcho.getName());
+            }
             
             //convert it to TEI
             File fileTEI = connector.convertToTEI(fileEcho);

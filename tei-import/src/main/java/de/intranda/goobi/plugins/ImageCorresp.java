@@ -264,8 +264,11 @@ public class ImageCorresp {
                 for (Element eltDiv : lstDivs) {
 
                     if (eltDiv.getName().contentEquals("div")) {
-                        for (Element eltPara : eltDiv.getChildren()) {
+                        
+                        List<Element> lstParas = new ArrayList<Element>(eltDiv.getChildren());
+                        for (Element eltPara : lstParas) {
 
+                            //first p elts:
                             if (eltPara.getName().contentEquals("p")) {
 
                                 List<Element> lstChildren = new ArrayList<Element>(eltPara.getChildren());
@@ -273,40 +276,15 @@ public class ImageCorresp {
 
                                     if (eltS.getName().contentEquals("s")) {
 
-                                        int indexS = eltPara.indexOf(eltS);
-                                        
-                                        //here we may find a pb, which must be moved out:
-                                        List<Element> lstSub = new ArrayList<Element>(eltS.getChildren());
-                                        for (Element eltPB : lstSub) {
-
-                                            if (eltPB.getName().contentEquals("pb")) {
-
-                                                //split the text at the child:
-                                                int index = eltS.indexOf(eltPB);
-
-                                                if (index < eltS.getText().length()) {
-                                                    Element elt1 = eltS.clone();
-                                                    Element elt2 = eltS.clone();
-
-                                                    for (int i = index; i < eltS.getContentSize(); i++) {
-                                                        elt1.removeContent(index);                                                        
-                                                    }
-                                                    for (int i = 0; i <= index; i++) {
-                                                        elt2.removeContent(0);                                                        
-                                                    }
-
-                                                    eltPara.removeContent(indexS);
-                                                    eltPara.addContent(indexS, elt1);
-                                                    eltPara.addContent(indexS + 1, elt2);
-                                                }
-
-                                                //move it up one level
-                                                eltPB.detach();
-                                                eltPara.addContent(indexS + 1, eltPB);
-                                            }
-                                        }
+                                        movePBup(eltPara, eltS);
                                     }
                                 }
+                            }
+                            
+                            //then note elts
+                            if (eltPara.getName().contentEquals("note")) {
+
+                               movePBup(eltDiv, eltPara);
                             }
                         }
                     }
@@ -316,6 +294,47 @@ public class ImageCorresp {
 
         //return the changed doc:
         return document;
+    }
+
+    /**
+     * Given an elt which may contain a pb elt, move the pb elt up to the same level.
+     * 
+     * @param eltPara
+     * @param eltS
+     */
+    private void movePBup(Element eltPara, Element eltS) {
+        int indexS = eltPara.indexOf(eltS);
+        
+        //here we may find a pb, which must be moved out:
+        List<Element> lstSub = new ArrayList<Element>(eltS.getChildren());
+        for (Element eltPB : lstSub) {
+
+            if (eltPB.getName().contentEquals("pb")) {
+
+                //split the text at the child:
+                int index = eltS.indexOf(eltPB);
+
+                if (index < eltS.getText().length()) {
+                    Element elt1 = eltS.clone();
+                    Element elt2 = eltS.clone();
+
+                    for (int i = index; i < eltS.getContentSize(); i++) {
+                        elt1.removeContent(index);                                                        
+                    }
+                    for (int i = 0; i <= index; i++) {
+                        elt2.removeContent(0);                                                        
+                    }
+
+                    eltPara.removeContent(indexS);
+                    eltPara.addContent(indexS, elt1);
+                    eltPara.addContent(indexS + 1, elt2);
+                }
+
+                //move it up one level
+                eltPB.detach();
+                eltPara.addContent(indexS + 1, eltPB);
+            }
+        }
     }
 
     
