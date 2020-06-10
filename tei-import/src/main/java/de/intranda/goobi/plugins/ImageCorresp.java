@@ -264,27 +264,36 @@ public class ImageCorresp {
                 for (Element eltDiv : lstDivs) {
 
                     if (eltDiv.getName().contentEquals("div")) {
-                        
-                        List<Element> lstParas = new ArrayList<Element>(eltDiv.getChildren());
-                        for (Element eltPara : lstParas) {
 
-                            //first p elts:
-                            if (eltPara.getName().contentEquals("p")) {
+                        Boolean boContinue = true;
+                        while (boContinue) {
 
-                                List<Element> lstChildren = new ArrayList<Element>(eltPara.getChildren());
-                                for (Element eltS : lstChildren) {
+                            boContinue = false;
 
-                                    if (eltS.getName().contentEquals("s")) {
+                            List<Element> lstParas = new ArrayList<Element>(eltDiv.getChildren());
+                            for (Element eltPara : lstParas) {
 
-                                        movePBup(eltPara, eltS);
+                                // note elts
+                                if (eltPara.getName().contentEquals("note")) {
+                                    boContinue = movePBup(eltDiv, eltPara);
+                                    if (boContinue)
+                                        break;
+                                }
+
+                                // p elts:
+                                if (eltPara.getName().contentEquals("p")) {
+
+                                    List<Element> lstChildren = new ArrayList<Element>(eltPara.getChildren());
+                                    for (Element eltS : lstChildren) {
+
+                                        if (eltS.getName().contentEquals("s")) {
+
+                                            boContinue = movePBup(eltPara, eltS);
+                                            if (boContinue)
+                                                break;
+                                        }
                                     }
                                 }
-                            }
-                            
-                            //then note elts
-                            if (eltPara.getName().contentEquals("note")) {
-
-                               movePBup(eltDiv, eltPara);
                             }
                         }
                     }
@@ -297,14 +306,15 @@ public class ImageCorresp {
     }
 
     /**
-     * Given an elt which may contain a pb elt, move the pb elt up to the same level.
+     * Given an elt which may contain a pb elt, move the first pb elt up to the same level. Return true. If there is none, return false.
      * 
      * @param eltPara
      * @param eltS
      */
-    private void movePBup(Element eltPara, Element eltS) {
+    private Boolean movePBup(Element eltPara, Element eltS) {
+
         int indexS = eltPara.indexOf(eltS);
-        
+
         //here we may find a pb, which must be moved out:
         List<Element> lstSub = new ArrayList<Element>(eltS.getChildren());
         for (Element eltPB : lstSub) {
@@ -319,10 +329,10 @@ public class ImageCorresp {
                     Element elt2 = eltS.clone();
 
                     for (int i = index; i < eltS.getContentSize(); i++) {
-                        elt1.removeContent(index);                                                        
+                        elt1.removeContent(index);
                     }
                     for (int i = 0; i <= index; i++) {
-                        elt2.removeContent(0);                                                        
+                        elt2.removeContent(0);
                     }
 
                     eltPara.removeContent(indexS);
@@ -333,13 +343,15 @@ public class ImageCorresp {
                 //move it up one level
                 eltPB.detach();
                 eltPara.addContent(indexS + 1, eltPB);
+
+                return true;
             }
         }
+
+        //none?
+        return false;
     }
 
-    
-
-    
     //    /**
     //     * Get the list of corresponding files for the MM and TEI files.
     //     * 
