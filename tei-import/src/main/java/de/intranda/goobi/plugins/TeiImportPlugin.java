@@ -130,7 +130,7 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
 
             //none? then quit
             if (strId == null) {
-                return false;
+                return true;
             }
 
             //Otherwise initialize the machinery:
@@ -142,7 +142,7 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
             //none? then quit
             if (fileEcho == null) {
                 log.warn("MPIWG ID: " + strId + " had no ECHO file");
-                return false;
+                return true;
             }
             else {
                 log.warn("MPIWG ID: " + strId + " had ECHO file " + fileEcho.getName());
@@ -178,9 +178,9 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
 
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+            return false;
         }
 
-        return false;
     }
 
     private DigitalDocument getDD()

@@ -31,7 +31,7 @@ public class App {
         String strSourceFolder = "/home/joel/git/MPI-TEI/plugin/metadata/184/images/868393576_source";
 
 //        String strTEI = "/home/joel/git/MPI-TEI/test1/Vitruvius_1757.xml";
-        String strTEI = "/home/joel/git/MPI-TEI/test1/Belidor_1757.xml";
+        String strTEI = "/home/joel/git/MPI-TEI/test1/Archimedes_1565.xml";
         
         TeiImportPlugin plugin = new TeiImportPlugin();
         plugin.strTestMmFile = strMMFile;
