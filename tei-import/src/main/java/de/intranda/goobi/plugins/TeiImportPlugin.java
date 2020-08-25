@@ -130,9 +130,12 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
 
             //none? then quit
             if (strId == null) {
+                log.warn("File " + process.getMetadataFilePath() + " had no MPIWGId");
                 return true;
             }
 
+            log.warn("Reading " + strId);
+            
             //Otherwise initialize the machinery:
             this.connector = new ConnectMMtoTEI(config);
 
