@@ -120,22 +120,36 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
     public boolean execute() {
 
         try {
+
+            if (process != null) {
+                log.warn("Reading " + process.getMetadataFilePath());
+            }
+
             //read the metadata file
             DigitalDocument dd = getDD();
             DocStruct logical = dd.getLogicalDocStruct();
             //            DocStruct physical = digitalDocument.getPhysicalDocStruct();
 
+            if (logical == null) {
+                log.warn("logical is null ");
+            }
+
+            //do not take the meta_anchor !!
+            for (DocStruct child : logical.getAllChildren()) {
+                logical = child;
+            }
+            
             //get the MPIWG ID:
             String strId = getMPIWGId(logical);
 
             //none? then quit
-            if (strId == null) {
+            if (strId == null && process != null) {
                 log.warn("File " + process.getMetadataFilePath() + " had no MPIWGId");
                 return true;
             }
 
             log.warn("Reading " + strId);
-            
+
             //Otherwise initialize the machinery:
             this.connector = new ConnectMMtoTEI(config);
 
@@ -146,11 +160,10 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
             if (fileEcho == null) {
                 log.warn("MPIWG ID: " + strId + " had no ECHO file");
                 return true;
-            }
-            else {
+            } else {
                 log.warn("MPIWG ID: " + strId + " had ECHO file " + fileEcho.getName());
             }
-            
+
             //convert it to TEI
             File fileTEI = connector.convertToTEI(fileEcho);
 
@@ -159,7 +172,7 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
 
             //move the pb links outside <s> elements:
             teiConverted = connector.cleanup(teiConverted);
-            
+
             //move the TEI file to subfolder of goobi folder: 
             //to metadata/Process_no/images/Process_id_source/
             String strFolder = getSourceFolder(logical);
@@ -169,7 +182,7 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
             if (!StorageProvider.getInstance().isFileExists(folder)) {
                 StorageProvider.getInstance().createDirectories(folder);
             }
-            
+
             if (teiConverted == null) {
                 moveTeiFile(fileTEI, strFolder);
             } else {
@@ -205,19 +218,19 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
     private void moveTeiFile(File fileTEI, String strFolder) throws IOException {
 
         String strFilenameNew = FilenameUtils.concat(strFolder, fileTEI.getName());
-        Path pathDestination =  Paths.get(strFilenameNew);
-        
+        Path pathDestination = Paths.get(strFilenameNew);
+
         StorageProvider.getInstance().copyFile(fileTEI.toPath(), pathDestination);
-//        FileUtils.copyFile(fileTEI, fileDestination);
+        //        FileUtils.copyFile(fileTEI, fileDestination);
     }
 
     private void saveTeiFile(Document teiConverted, String strFilenameNew) throws IOException {
 
         XMLOutputter xmlOutput = new XMLOutputter();
 
-        OutputStream output =  StorageProvider.getInstance().newOutputStream(Paths.get(strFilenameNew));
-//        StorageProvider.getInstance().createFile(Paths.get(strFilenameNew));
-        
+        OutputStream output = StorageProvider.getInstance().newOutputStream(Paths.get(strFilenameNew));
+        //        StorageProvider.getInstance().createFile(Paths.get(strFilenameNew));
+
         // display nice nice
         xmlOutput.setFormat(Format.getPrettyFormat());
         xmlOutput.output(teiConverted, output); // new FileWriter(strFilenameNew));
@@ -235,10 +248,14 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
 
         if (lstMetadata != null) {
             for (Metadata metadata : lstMetadata) {
+//                log.warn("Metadata: " + metadata.getType().getName() + " Value: " + metadata.getValue());
+
                 if (metadata.getType().getName().equals("MPIWGID")) {
                     return cleanID(metadata.getValue());
                 }
             }
+        } else {
+            log.warn("lstMetadata is null");
         }
 
         //otherwise:
