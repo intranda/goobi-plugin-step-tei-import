@@ -135,10 +135,12 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
             }
 
             //do not take the meta_anchor !!
-            for (DocStruct child : logical.getAllChildren()) {
-                logical = child;
+            if (logical.getAllChildren() != null) {
+                for (DocStruct child : logical.getAllChildren()) {
+                    logical = child;
+                }
             }
-            
+
             //get the MPIWG ID:
             String strId = getMPIWGId(logical);
 
@@ -248,7 +250,7 @@ public class TeiImportPlugin implements IStepPlugin, IPlugin {
 
         if (lstMetadata != null) {
             for (Metadata metadata : lstMetadata) {
-//                log.warn("Metadata: " + metadata.getType().getName() + " Value: " + metadata.getValue());
+                //                log.warn("Metadata: " + metadata.getType().getName() + " Value: " + metadata.getValue());
 
                 if (metadata.getType().getName().equals("MPIWGID")) {
                     return cleanID(metadata.getValue());

@@ -29,11 +29,11 @@ public class App {
         String strConfigFile = "/home/joel/git/MPI-TEI/plugin/plugin_intranda_step_tei_import.xml";
         
 //        String strMMFile = "/home/joel/git/MPI-TEI/plugin/metadata/184/meta.xml";
-        String strMMFile = "/home/joel/git/MPI-TEI/new-prob/meta.xml";
+        String strMMFile = "/home/joel/git/MPI-TEI/new-prob/1073/meta.xml";
         String strSourceFolder = "/home/joel/git/MPI-TEI/plugin/metadata/184/images/868393576_source";
 
 //        String strTEI = "/home/joel/git/MPI-TEI/test1/Vitruvius_1757.xml";
-        String strTEI = "/home/joel/git/MPI-TEI/test1/Archimedes_1565.xml";
+//        String strTEI = "/home/joel/git/MPI-TEI/test1/Archimedes_1565.xml";
         
         TeiImportPlugin plugin = new TeiImportPlugin();
         plugin.strTestMmFile = strMMFile;
