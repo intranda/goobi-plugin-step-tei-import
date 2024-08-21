@@ -6,7 +6,7 @@ description: Step Plugin zur Umwandlung von Dateien in eine TEI-Datei
 ---
 
 ## Einführung
-Das Plugin sucht unter die hinterlegten ECHO-XML-Dateien nach eine mit den gleichen MPIWG-Id. Dieser wird dann mittels ein hinterlegten XSL-Datein in einen TEI-Datei umwandlet, und in einen dafür definierten Ordner gespeichert. Danach wird der TEI-Datei in der Goobi-Prozess kopiert, nach der _source Unterordner im Goobi-Prozess image ordner. Dabei werden die Image links nach die images in Viewer ubersetzt. Von dort wird es automatisch exportiert (als "Download" Link), wenn das Prozess ins Viewer exportiert wird. 
+Das Plugin sucht zwischen den hinterlegten ECHO-XML-Dateien nach einer mit den gleichen MPIWG-ID. Diese Datei wird dann mittels einer hinterlegten XSL-Datei in eine TEI-Datei umgewandelt und innerhalb eines dafür definierten Ordners gespeichert. Danach wird diese TEI-Datei in den zugehörigen Goobi-Vorgang kopiert und dort innerhalb des _source-Unterordners gespeichert. Dabei werden die Bildverweise so angepasst, dass diese für den Goobi viewer passen werden. Innerhalb des Goobi viewer wird diese Datei anschließend als Download zur Verfügung stehen.
 
 ## Installation
 Das Plugin besteht aus zwei Dateien:
@@ -31,12 +31,12 @@ Die Datei `plugin_intranda_step_tei_import.xml` muss ebenfalls für den tomcat-N
 ## Überblick und Funktionsweise
 Nachdem das Plugin installiert und konfiguriert wurde, kann es innerhalb eines Arbeitsschrittes von Goobi genutzt werden.
 
-Dazu muss innerhalb der gewünschten Aufgabe das Plugin `"plugin_intranda_step_tei_import"` eingetragen werden. Des Weiteren muss die Checkboxes Metadaten und Automatische Aufgabe gesetzt sein.
+Dazu muss innerhalb der gewünschten Aufgabe das Plugin `plugin_intranda_step_tei_import` eingetragen werden. Des Weiteren muss die Checkbox für die Bearbeitung der Metadaten und die Automatische Aufgabe gesetzt sein.
 
 ![Konfiguration des Arbeitsschritts für die Nutzung des Plugins](screen1_de.png)
 
 ## Konfiguration
-Die Konfiguration des Plugins erfolgt in der Datei `plugin_intranda_step_tei_import.xml` wie hier aufgezeigt:
+Die Konfiguration des Plugins erfolgt innerhalb der Datei `plugin_intranda_step_tei_import.xml` wie hier aufgezeigt:
 
 {{CONFIG_CONTENT}}
 
@@ -44,9 +44,9 @@ Die Konfiguration des Plugins erfolgt in der Datei `plugin_intranda_step_tei_imp
 
 Parameter               | Erläuterung
 ------------------------|------------------------------------
-`xslFile`               | wird der Pfad zur XSL-Datei hinterlegt. |
-`teiFolder`             | definiert den Orner, wo die TEI-Dateien erzeugt werden. |
-`echoFolder`            | definiert den Orner, wo die ECHO-XML-Dateien liegen.|
-`rulesetPath`           | liefert der Pfad zur Ruleset für die MetsMods Dateien. |
-`viewerPages`           | beschreibt die URL für die Viewer. |
-`goobiMMFolder`         | ist nur der standard metadata Ornder. Es ist nur für Testingzwecke änderbar. |
+`xslFile`               | Hiermit wird der Pfad zur XSL-Datei hinterlegt. |
+`teiFolder`             | Dieser Parameter definiert den Ordner, wo die TEI-Dateien erzeugt werden. |
+`echoFolder`            | Dieser Parameter definiert den Ordner, wo die ECHO-XML-Dateien liegen. |
+`rulesetPath`           | Dieser Parameter liefert den Pfad zum Regelsatz. |
+`viewerPages`           | Hiermit wird die URL für den Goobi viewer festgelegt. |
+`goobiMMFolder`         | Dieser Parameter definiert Pfad zummetadata Ordner. Er ist allein für Testingzwecke änderbar. |
