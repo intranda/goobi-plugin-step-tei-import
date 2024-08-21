@@ -1,7 +1,7 @@
 ---
-title: TEI import
+title: Import of ECHO files as TEI
 identifier: intranda_step_tei_import
-published: false
+published: true
 description: Step plugin for converting files into a TEI file
 ---
 
