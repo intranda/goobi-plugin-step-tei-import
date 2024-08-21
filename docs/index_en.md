@@ -43,11 +43,11 @@ The configuration of the plugin is done in the file `plugin_intranda_step_tei_im
 
 {{CONFIG_DESCRIPTION_PROJECT_STEP}}
 
-Parameter               | Erläuterung
+Parameter               | Explanation
 ------------------------|------------------------------------
-`xslFile`           | wird der Pfad zur XSL-Datei hinterlegt. |
-`teiFolder`                      | definiert den Orner, wo die TEI-Dateien erzeugt werden. |
-`echoFolder`                      | definiert den Orner, wo die ECHO-XML-Dateien liegen.|
-`rulesetPath`                      | liefert der Pfad zur Ruleset für die MetsMods Dateien. |
-`viewerPages`                      | beschreibt die URL für die Viewer. |
-`goobiMMFolder`                      | ist nur der standard metadata Ornder. Es ist nur für Testingzwecke änderbar. |
+`xslFile`               | This is used to store the path to the XSL file. |
+`teiFolder`             | This parameter defines the folder where the TEI files are created. |
+`echoFolder`            | This parameter defines the folder where the ECHO XML files are located. |
+`rulesetPath`           | This parameter provides the path to the rule set. |
+`viewerPages`           | This sets the URL for the Goobi viewer. |
+`goobiMMFolder`         | This parameter defines the path to themetadata folder. It can only be changed for testing purposes. |
