@@ -1,0 +1,28 @@
+<config_plugin>
+    <config>
+        <!-- which projects to use for (can be more then one, otherwise use *) -->
+        <project>*</project>
+        <step>*</step>
+        <StepName>intranda_step_tei import</StepName>
+        <ErrorMessage>TEI file could not be found.</ErrorMessage>
+
+        <!--This is the path to the XSL file for transforming ECHO files into TEI files: -->
+        <xslFile>/opt/digiverso/tei/info/echo2tei2.xsl</xslFile>
+    
+        <!--This is the base path to the TEI files: -->
+        <teiFolder>/opt/digiverso/tei/</teiFolder>
+    
+        <!--This is the base path to the ECHo XML files: -->
+        <echoFolder>/opt/digiverso/sftpupload/upload/uploads/echo_xml/</echoFolder>
+        
+        <!-- rulesets for the MM files: -->
+        <rulesetPath>/opt/digiverso/goobi/rulesets/mpi.xml</rulesetPath>
+        
+        <!-- Viewer base path: the individual pages lie here + "id no."/"page no"/-->
+        <viewerPages>https://mpiviewer.intranda.com/viewer/image/</viewerPages>
+
+        <!--This is the base path to the Goobi MM files: -->
+        <goobiMMFolder>/opt/digiverso/goobi/metadata/</goobiMMFolder>
+    
+    </config>
+</config_plugin>
