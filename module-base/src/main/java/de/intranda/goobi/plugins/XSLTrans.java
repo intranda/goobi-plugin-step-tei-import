@@ -57,7 +57,6 @@ public class XSLTrans {
             if (StorageProvider.getInstance().isFileExists(fileTei)) {
                 StorageProvider.getInstance().deleteFile(fileTei);
             }
-            StorageProvider.getInstance().createFile(fileTei);            
             
             if (factory == null) {
                 factory = DocumentBuilderFactory.newInstance();

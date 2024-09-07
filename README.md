@@ -1,99 +1,39 @@
-#Documentation zur Plugin zum automatische TEI-Datei Erzeugung.
+# Goobi workflow Plugin: goobi-plugin-step-tei-import
 
-## Beschreibung
+<img src="https://goobi.io/wp-content/uploads/logo_goobi_plugin.png" align="right" style="margin:0 0 20px 20px;" alt="Plugin for Goobi workflow" width="175" height="109">
 
-Das Plugin sucht unter die hinterlegten ECHO-XML-Dateien nach eine mit den gleichen MPIWG-Id. Dieser wird dann mittels ein hinterlegten XSL-Datein in einen TEI-Datei umwandlet, und in einen dafür definierten Ornder gespeichert. Danach wird der TEI-Datei in der Goobi-Prozess kopiert, nach der _source Unterordner im Goobi-Prozess image ordner. Dabei werden die Image links nach die images in Viewer ubersetzt. Von dort wird es automatisch exportiert (als "Download" Link), wenn das Prozess ins Viewer exportiert wird. 
+This Step plugin for Goobi workflow allows an import of TEI files. It was specifically developed for the Max-Plack-Institute for History of Science and handles their custom legacy data.
 
+This is a plugin for Goobi workflow, the open source workflow tracking software for digitisation projects. More information about Goobi workflow is available under https://goobi.io. If you want to get in touch with the user community simply go to https://community.goobi.io.
 
-## Installation und Konfiguration
+## Plugin details
 
-Das Plugin besteht aus zwei Dateien:
+More information about the functionality of this plugin and the complete documentation can be found in the central documentation area at https://docs.goobi.io
 
-```bash
-goobi-plugin-step-tei-import.jar
-plugin_intranda_step_tei-import.xml
-```
+Detail                      | Description
+--------------------------- | ----------------------
+**Plugin identifier**       | intranda_step_tei_import
+**Plugin type**             | step
+**Licence**                 | GPL 2.0 or newer
+**Documentation (German)**  | https://docs.goobi.io/workflow-plugins/v/ger/step/goobi-plugin-step-tei-import
+**Documentation (English)** | https://docs.goobi.io/workflow-plugins/v/eng/step/goobi-plugin-step-tei-import
 
-Die Datei `"goobi-plugin-step-tei-import.jar"` enthält die Programmlogik und muss für den tomcat-Nutzer lesbar in folgendes Verzeichnis installiert werden:
+## Goobi details
 
-```bash
-/opt/digiverso/goobi/plugins/step/
-```
+Goobi workflow is an open source web application to manage small and large digitisation projects mostly in cultural heritage institutions all around the world. More information about Goobi can be found here:
 
-Die Datei ```plugin_intranda_step_tei_import.xml``` muss ebenfalls für den tomcat-Nutzer lesbar sein und in folgendes Verzeichnis installiert werden:
+Detail                      | Description
+--------------------------- | ---------------------------
+**Goobi web site**          | https://www.goobi.io
+**Goobi community**         | https://community.goobi.io
+**Goobi documentation**     | https://docs.goobi.io
 
-```bash
-/opt/digiverso/goobi/config/
-```
+## Development
 
-Die Datei dient zur Konfiguration des Plugins und muss wie folgt aufgebaut sein:
+This plugin was developed by intranda. If you have any issues, feedback, question or if you are looking for more information about Goobi workflow, Goobi viewer and all our other developments that are used in digitisation projects please get in touch with us.  
 
-```xml
-<config_plugin>
-    <config>
-        <!-- which projects to use for (can be more then one, otherwise use *) -->
-        <project>*</project>
-        <step>*</step>
-        <StepName>intranda_step_tei import</StepName>
-        <ErrorMessage>TEI file could not be found.</ErrorMessage>
-
-        <!--This is the path to the XSL file for transforming ECHO files into TEI files: -->
-        <xslFile>/opt/digiverso/tei/info/echo2tei2.xsl</xslFile>
-    
-        <!--This is the base path to the TEI files: -->
-        <teiFolder>/opt/digiverso/tei/</teiFolder>
-    
-        <!--This is the base path to the ECHo XML files: -->
-        <echoFolder>/opt/digiverso/sftpupload/upload/uploads/echo_xml/</echoFolder>
-        
-        <!-- rulesets for the MM files: -->
-        <rulesetPath>/opt/digiverso/goobi/rulesets/mpi.xml</rulesetPath>
-        
-        <!-- Viewer base path: the individual pages lie here + "id no."/"page no"/-->
-        <viewerPages>https://mpiviewer.intranda.com/viewer/image/</viewerPages>
-
-        <!--This is the base path to the Goobi MM files: -->
-        <goobiMMFolder>/opt/digiverso/goobi/metadata/</goobiMMFolder>
-    
-    </config>
-</config_plugin>
-```
-
-Eine Kopie liegt in dieser Repro, im Ordner "resources".
-
-Im Element `"xslFile"`
-wird der Pfad zur XSL-Datei hinterlegt.
-
-
-Das Element `"teiFolder"`
-definiert der Orner, wo die TEI-Dateien erzeugt werden.
-
-Das Element `"echoFolder"`
-definiert der Orner, wo die ECHO-XML-Dateien liegen.
-
-Das Element `"rulesetPath"`
-liefert der Pfad zur Ruleset für die MetsMods Dateien.
-
-Das Element `"viewerPages"`
-beschreibt die URL für die Viewer. 
-
-Das Element `"goobiMMFolder"`
-ist nur der standard metadata Ornder. Es ist nur für Testingzwecke änderbar.
-
-
-## Einstellungen in Goobi
-
-Nachdem das Plugin installiert und konfiguriert wurde, kann es innerhalb eines Arbeitsschrittes von Goobi genutzt werden.
-
-Dazu muss innerhalb der gewünschten Aufgabe das Plugin `"plugin_intranda_step_tei_import"` eingetragen werden. Des Weiteren muss die Checkboxes Metadaten und Automatische Aufgabe gesetzt sein.
-
-## Arbeitsweise
-
-Die Arbeitsweise des Plugins innerhalb des korrekt konfigurierten Workflows sieht folgendermaßen aus:
-
-* Wenn das Plugin innerhalb des Workflows aufgerufen wurde, öffnet es die METS-Datei.
-* Die METS-Datei wird nach untersucht, ob es eine Metadatum "MPIWGID" hat, wenn ja, wird dieser als Id genommen.
-* Die ECHO-XML-Datein im Echo Ordner werden durchsucht, nach eine Datei der ein Metadatum names "identifier", der dieser Id beinhaltet als String.
-* Falls dieser Datei gefunden wird, wird es mittels der XSL-Datei in einer TEI-XML-Datei verwandelt. und im TEI-Ordner abgelegt.
-* Danach wird der TEI-Datei in der Goobi-Prozess kopiert, nach der $Process-id$_source Unterordner im Goobi-Prozess image ordner. Dabei werden die Image links nach die images in Viewer ubersetzt. 
-* Von dort wird es automatisch exportiert (als "Download" Link), wenn das Prozess ins Viewer exportiert wird. 
+Contact                     | Details
+--------------------------- | ----------------------------------------------------
+**Company name**            | intranda GmbH
+**Address**                 | Bertha-von-Suttner-Str. 9, 37085 Göttingen, Germany
+**Web site**                | https://www.intranda.com
