@@ -3,6 +3,10 @@ title: Import von ECHO-Dateien als TEI
 identifier: intranda_step_tei_import
 published: true
 description: Step Plugin zur Umwandlung von Echo-Dateien in eine TEI-Datei
+keywords:
+    - Goobi workflow
+    - Plugin
+    - Step Plugin
 ---
 
 ## Einführung
