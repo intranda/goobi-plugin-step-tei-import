@@ -9,7 +9,7 @@ keywords:
     - Step Plugin
 ---
 
-## Intoduction
+## Introduction
 The plugin searches the stored ECHO XML files for one with the same MPIWG ID. This file is then converted into a TEI file using a predefined XSL file and saved in a designated folder. After that, the TEI file is copied into the Goobi process, into the _source subfolder within the Goobi process image folder. During this process, the image links are translated to the images in the viewer. From there, it is automatically exported (as a "Download" link) when the process is exported to the viewer.
 
 ## Installation
@@ -54,4 +54,4 @@ Parameter               | Explanation
 `echoFolder`            | This parameter defines the folder where the ECHO XML files are located. |
 `rulesetPath`           | This parameter provides the path to the rule set. |
 `viewerPages`           | This sets the URL for the Goobi viewer. |
-`goobiMMFolder`         | This parameter defines the path to themetadata folder. It can only be changed for testing purposes. |
+`goobiMMFolder`         | This parameter defines the path to the metadata folder. It can only be changed for testing purposes. |

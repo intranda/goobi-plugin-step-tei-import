@@ -53,4 +53,4 @@ Parameter               | Erläuterung
 `echoFolder`            | Dieser Parameter definiert den Ordner, wo die ECHO-XML-Dateien liegen. |
 `rulesetPath`           | Dieser Parameter liefert den Pfad zum Regelsatz. |
 `viewerPages`           | Hiermit wird die URL für den Goobi viewer festgelegt. |
-`goobiMMFolder`         | Dieser Parameter definiert Pfad zummetadata Ordner. Er ist allein für Testingzwecke änderbar. |
+`goobiMMFolder`         | Dieser Parameter definiert Pfad zum metadata Ordner. Er ist allein für Testingzwecke änderbar. |
